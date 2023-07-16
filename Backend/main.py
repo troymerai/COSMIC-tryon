@@ -18,7 +18,7 @@ class User(db.Model):
 
     __tablename__ = table_name
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(255), unique=True, nullable=False) # varchar?
+    user_id = db.Column(db.String(255), unique=True, nullable=False)
     user_pw = db.Column(db.String(255), nullable=False)
 
 
@@ -30,13 +30,18 @@ def sign_up():
 
     existing_user = User.query.filter_by(user_id=user_id).first()
     if existing_user:
-        return jsonify(message='User id already exists'), 400
+        return jsonify(message='이미 존재하는 아이디입니다.'), 400
 
     new_user = User(user_id=user_id, user_pw=user_pw)
     db.session.add(new_user)
-    db.session.commit()
+    
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify(message='에러가 발생했습니다. 다시 시도해주세요.'), 500
 
-    return jsonify(message='User created successfully'), 201
+    return jsonify(message='회원가입이 완료되었습니다.'), 201
 
 
 @app.route('/signin', methods=['POST'])
@@ -47,12 +52,12 @@ def sign_in():
 
     user = User.query.filter_by(user_id=user_id).first()
     if not user:
-        return jsonify(message='User not found'), 404
+        return jsonify(message='아이디가 존재하지 않습니다.'), 404
 
     if user.user_pw != user_pw:
-        return jsonify(message='Incorrect password'), 401
+        return jsonify(message='비밀번호가 일치하지 않습니다.'), 401
 
-    return jsonify(message='Sign in successful'), 200
+    return jsonify(message='로그인 되었습니다.'), 200
 
 
 if __name__ == '__main__':
