@@ -1,25 +1,7 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-import os
+from flask import request, jsonify
 
-load_dotenv()
-
-app = Flask(__name__)
-
-db_uri = os.getenv('SQLALCHEMY_DATABASE_URI')
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-
-db = SQLAlchemy(app)
-
-
-class User(db.Model):
-    table_name = os.getenv('USER_TABLE_NAME')
-
-    __tablename__ = table_name
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(255), unique=True, nullable=False)
-    user_pw = db.Column(db.String(255), nullable=False)
+from common import app, db
+from model.user import User
 
 
 @app.route('/signup', methods=['POST'])
