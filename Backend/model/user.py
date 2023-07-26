@@ -6,6 +6,8 @@ from common import db
 
 load_dotenv()
 
+def get_current_seoul_time():
+    return datetime.utcnow() + timedelta(hours=9)
 
 class User(db.Model):
     __table_args__ = {'schema': os.getenv('SCHEMA_NAME')}
@@ -15,6 +17,6 @@ class User(db.Model):
     user_pw = db.Column(db.String(255), nullable=False)
     created_at = db.Column(
         db.TIMESTAMP(timezone=True),
-        default=datetime.utcnow() + timedelta(hours=9),
+        default=get_current_seoul_time,
         nullable=False
     )
