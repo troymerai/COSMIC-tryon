@@ -42,5 +42,22 @@ def sign_in():
     return jsonify(message='로그인 되었습니다.'), 200
 
 
+@app.route('/upload_images', methods=['POST'])
+def upload_images():
+    """
+    Before 2장의 이미지 DB에 업로드 -> 모델 돌리기 -> 최종 결과 이미지 DB에 업로드
+    -> After 이미지 테이블 id 반환
+    """
+    pass
+
+
+@app.route('/get_result_image', methods=['GET'])
+def get_image():
+    """
+    After 이미지 테이블 id 기반으로, 최종 결과 이미지 DB에서 GET
+    """
+    pass
+
+
 if __name__ == '__main__':
     app.run(debug=True)
