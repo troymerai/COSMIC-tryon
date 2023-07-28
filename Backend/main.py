@@ -2,6 +2,7 @@ from flask import request, jsonify
 
 from common import app, db
 from model.user import User
+from model.before_image import BeforeImage
 
 
 @app.route('/signup', methods=['POST'])
@@ -48,7 +49,37 @@ def upload_images():
     Before 2장의 이미지 DB에 업로드 -> 모델 돌리기 -> 최종 결과 이미지 DB에 업로드
     -> After 이미지 테이블 id 반환
     """
-    pass
+
+    user_id = request.form.get('user_id')
+
+    body_img_file = request.files.get('body_image')
+    clothes_img_file = request.files.get('clothes_image')
+
+    if not body_img_file or not clothes_img_file:
+        return '이미지 2장을 업로드 해주세요.', 400
+
+    body_img_data = body_img_file.read()
+    clothes_img_data = clothes_img_file.read()
+
+    new_record = BeforeImage(
+        user_id=user_id,
+        body_img_data=body_img_data,
+        clothes_img_data=clothes_img_data
+    )
+
+    db.session.add(new_record)
+    
+    try:
+        db.session.commit()
+
+    except:
+        db.session.rollback()
+        return jsonify(message='에러가 발생했습니다. 다시 시도해주세요.'), 500
+    
+    ### 모델처리과정 필요 ###
+    ### ... ###
+
+    return '이미지 처리가 완료되었습니다.', 200
 
 
 @app.route('/get_result_image', methods=['GET'])
