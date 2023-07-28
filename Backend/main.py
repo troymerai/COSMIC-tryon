@@ -1,8 +1,9 @@
-from flask import request, jsonify
+from flask import request, jsonify, Response
 
-from common import app, db
+from common import app, db, get_image_format
 from model.user import User
 from model.before_image import BeforeImage
+from model.after_image import AfterImage
 
 
 @app.route('/signup', methods=['POST'])
@@ -71,6 +72,7 @@ def upload_images():
     
     try:
         db.session.commit()
+        image_id = new_record.id
 
     except:
         db.session.rollback()
@@ -79,15 +81,24 @@ def upload_images():
     ### 모델처리과정 필요 ###
     ### ... ###
 
-    return '이미지 처리가 완료되었습니다.', 200
+    return jsonify({"image_id": image_id, "message": "이미지 처리가 완료되었습니다."}), 200
 
 
-@app.route('/get_result_image', methods=['GET'])
-def get_image():
+@app.route('/get_result_image/<image_id>', methods=['GET'])
+def get_image(image_id):
     """
     After 이미지 테이블 id 기반으로, 최종 결과 이미지 DB에서 GET
     """
-    pass
+
+    data = AfterImage.query.filter_by(id=image_id).first()
+
+    if not data:
+        return '이미지를 찾을 수 없습니다.', 404
+
+    img_data = data.img_data
+    img_format = get_image_format(img_data)
+
+    return Response(img_data, content_type=f'image/{img_format}')
 
 
 if __name__ == '__main__':
