@@ -1,76 +1,76 @@
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
-  final int user_id;
+  final String user_id;
   var user_uuid;
-  final String user_name;
-  final String user_gender;
-  final String user_nickname;
-  final int user_phonenumber;
-  final int user_studentID;
-  final int user_age;
-  final String user_imageUrls;
-  final String user_bio;
-  final String user_major;
-  final String user_email;
-  final String user_password;
+  //final String user_name;
+  //final String user_gender;
+  //final String user_nickname;
+  //final int user_phonenumber;
+  //final int user_studentID;
+  //final int user_age;
+  //final String user_imageUrls;
+  //final String user_bio;
+  //final String user_major;
+  //final String user_email;
+  final String user_pw;
 
   User({
     required this.user_id,
     required this.user_uuid,
-    required this.user_name,
-    required this.user_gender,
-    required this.user_nickname,
-    required this.user_phonenumber,
-    required this.user_studentID,
-    required this.user_age,
-    required this.user_imageUrls,
-    required this.user_bio,
-    required this.user_major,
-    required this.user_email,
-    required this.user_password,
+    //required this.user_name,
+    //required this.user_gender,
+    //required this.user_nickname,
+    //required this.user_phonenumber,
+    //required this.user_studentID,
+    //required this.user_age,
+    //required this.user_imageUrls,
+    //required this.user_bio,
+    //required this.user_major,
+    //required this.user_email,
+    required this.user_pw,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        user_id: int.parse(json['user_id']),
+        user_id: json['user_id'],
         user_uuid: json['user_uuid'],
-        user_name: json['user_name'],
-        user_gender: json['user_gender'],
-        user_nickname: json['user_nickname'],
-        user_phonenumber: int.parse(json['user_phonenumber']),
-        user_studentID: int.parse(json['user_studentID']),
-        user_age: int.parse(json['user_age']),
-        user_imageUrls: json['user_imageUrls'],
-        user_bio: json['user_bio'],
-        user_major: json['user_major'],
-        user_email: json['user_email'],
-        user_password: json['user_password'],
+        //user_name: json['user_name'],
+        //user_gender: json['user_gender'],
+        //user_nickname: json['user_nickname'],
+        //user_phonenumber: int.parse(json['user_phonenumber']),
+        //user_studentID: int.parse(json['user_studentID']),
+        //user_age: int.parse(json['user_age']),
+        //user_imageUrls: json['user_imageUrls'],
+        //user_bio: json['user_bio'],
+        //user_major: json['user_major'],
+        //user_email: json['user_email'],
+        user_pw: json['user_pw'],
       );
 
   Map<String, dynamic> toJson() => {
-        'user_id': user_id.toString(),
+        'user_id': user_id,
         'user_uuid': user_uuid,
-        'user_name': user_name,
-        'user_gender': user_gender,
-        'user_nickname': user_nickname,
-        'user_phonenumber': user_phonenumber.toString(),
-        'user_studentID': user_studentID.toString(),
-        'user_age': user_age.toString(),
-        'user_imageUrls': user_imageUrls,
-        'user_bio': user_bio,
-        'user_major': user_major,
-        'user_email': user_email,
-        'user_password': user_password,
+        //'user_name': user_name,
+        //'user_gender': user_gender,
+        //'user_nickname': user_nickname,
+        //'user_phonenumber': user_phonenumber.toString(),
+        //'user_studentID': user_studentID.toString(),
+        //'user_age': user_age.toString(),
+        //'user_imageUrls': user_imageUrls,
+        //'user_bio': user_bio,
+        //'user_major': user_major,
+        //'user_email': user_email,
+        'user_pw': user_pw,
       };
 
   @override
   List<Object?> get props => [
         user_id,
-        user_name,
-        user_age,
-        user_imageUrls,
-        user_bio,
-        user_major,
+        // user_name,
+        // user_age,
+        // user_imageUrls,
+        // user_bio,
+        // user_major,
       ];
 
   // static List<User> users = [
