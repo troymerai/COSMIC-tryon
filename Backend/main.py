@@ -1,6 +1,7 @@
 from flask import request, jsonify, Response
 
-from common import app, db, get_image_format
+from common import app, db
+from image_utils import get_image_format, merge_images
 from model.user import User
 from model.before_image import BeforeImage
 from model.after_image import AfterImage
@@ -8,6 +9,10 @@ from model.after_image import AfterImage
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
+    """
+    회원가입 API
+    JSON 형식으로 user_id (str), user_pw(str) 넘기기
+    """
     data = request.get_json()
     user_id = data.get('user_id')
     user_pw = data.get('user_pw')
@@ -30,6 +35,10 @@ def sign_up():
 
 @app.route('/signin', methods=['POST'])
 def sign_in():
+    """
+    로그인 API
+    JSON 형식으로 user_id (str), user_pw(str) 넘기기
+    """
     data = request.get_json()
     user_id = data.get('user_id')
     user_pw = data.get('user_pw') # string 타입으로 DB 테이블에 저장되어 있음.
@@ -50,14 +59,13 @@ def upload_images():
     Before 2장의 이미지 DB에 업로드 -> 모델 돌리기 -> 최종 결과 이미지 DB에 업로드
     -> After 이미지 테이블 id 반환
     """
-
     user_id = request.form.get('user_id')
 
     body_img_file = request.files.get('body_image')
     clothes_img_file = request.files.get('clothes_image')
 
     if not body_img_file or not clothes_img_file:
-        return '이미지 2장을 업로드 해주세요.', 400
+        return '상체 이미지 1장과 옷 이미지 1장을 모두 업로드 해주세요.', 400
 
     body_img_data = body_img_file.read()
     clothes_img_data = clothes_img_file.read()
@@ -76,10 +84,24 @@ def upload_images():
 
     except:
         db.session.rollback()
-        return jsonify(message='에러가 발생했습니다. 다시 시도해주세요.'), 500
+        return jsonify(message='업로드하신 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
     
-    ### 모델처리과정 필요 ###
-    ### ... ###
+    merged_image = merge_images(body_img_data, clothes_img_data, image_id)
+
+    new_record = AfterImage(
+        user_id=user_id,
+        img_data=merged_image
+    )
+
+    db.session.add(new_record)
+    
+    try:
+        db.session.commit()
+        image_id = new_record.id
+
+    except:
+        db.session.rollback()
+        return jsonify(message='합성된 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
     return jsonify({"image_id": image_id, "message": "이미지 처리가 완료되었습니다."}), 200
 
@@ -89,7 +111,6 @@ def get_image(image_id):
     """
     After 이미지 테이블 id 기반으로, 최종 결과 이미지 DB에서 GET
     """
-
     data = AfterImage.query.filter_by(id=image_id).first()
 
     if not data:

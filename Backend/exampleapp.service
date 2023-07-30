@@ -7,6 +7,7 @@ User=your_username
 Group=www-data
 WorkingDirectory=/path/to/your/app
 Environment="PATH=/path/to/your/virtualenv/bin"
+Environment="PYTHONPATH=/path/to/your/dir/COSMIC-tryon/Backend/ACGPN/U_2_Net"
 ExecStart=/path/to/your/virtualenv/bin/gunicorn main:app --bind 0.0.0.0:8000 --max-requests 1000 --max-requests-jitter 50
 
 [Install]
