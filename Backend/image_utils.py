@@ -79,7 +79,7 @@ def merge_images(body_img_data, clothes_img_data, image_id):
     img_path = os.path.join('ACGPN/Data_preprocessing/test_img', img_name)
     img.save(img_path)
 
-    os.system("python3 ACGPN/Self-Correction-Human-Parsing-for-ACGPN/simple_extractor.py --dataset 'lip' --model-restore 'lip_final.pth' --input-dir 'Data_preprocessing/test_img' --output-dir 'Data_preprocessing/test_label'")
+    os.system("python3 ACGPN/Self-Correction-Human-Parsing-for-ACGPN/simple_extractor.py --dataset 'lip' --model-restore 'ACGPN/lip_final.pth' --input-dir 'ACGPN/Data_preprocessing/test_img' --output-dir 'ACGPN/Data_preprocessing/test_label'")
 
 
     pose_path = os.path.join('ACGPN/Data_preprocessing/test_pose', img_name.replace('.png', '_keypoints.json'))
@@ -98,7 +98,7 @@ def merge_images(body_img_data, clothes_img_data, image_id):
 
     os.system("python ACGPN/test.py")
 
-    file_path = f"ACGPN/results/test/try-on/{img_name}" # 이게 어떻게 try-on에 저장이 되는거지?
+    file_path = f"ACGPN/results/test/try-on/{img_name}"
     upload_folder = 'Real-ESRGAN/upload'
 
     shutil.move(file_path, upload_folder)
