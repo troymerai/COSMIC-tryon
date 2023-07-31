@@ -21,14 +21,7 @@ def get_image_format(image_data):
         return None
 
 
-def delete_files_in_directory(directory):
-    for filename in os.listdir(directory):
-        file_path = os.path.join(directory, filename)
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-
-
-def clean_files():
+def clean_files(image_id):
     directories_to_clean = [
         "ACGPN/Data_preprocessing/test_color/",
         "ACGPN/Data_preprocessing/test_colormask/",
@@ -41,19 +34,23 @@ def clean_files():
         "ACGPN/inputs/img/",
         "ACGPN/results/test/refined_cloth/",
         "ACGPN/results/test/warped_cloth/",
-        "Real-ESRGAN/upload/",
-        "Real-ESRGAN/results/",
+        "Real_ESRGAN/upload/",
+        "Real_ESRGAN/results/",
     ]
 
     for directory in directories_to_clean:
-        delete_files_in_directory(directory)
+        image_file_name = f'{image_id}.png'
+        if image_file_name in os.listdir(directory):
+            file_path = os.path.join(directory, image_file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
 
 
 def merge_images(body_img_data, clothes_img_data, image_id):
     """
     body image + clothes image -(모델)-> 합성된 사진 반환하는 함수
     """
-    
+
     cloth_name = f'cloth_{image_id}.png'
     cloth_path = f'ACGPN/inputs/cloth/{cloth_name}'
 
@@ -99,11 +96,11 @@ def merge_images(body_img_data, clothes_img_data, image_id):
     os.system("python ACGPN/test.py")
 
     file_path = f"ACGPN/results/test/try-on/{img_name}"
-    upload_folder = 'Real-ESRGAN/upload'
+    upload_folder = 'Real_ESRGAN/upload'
 
     shutil.move(file_path, upload_folder)
 
-    os.system("python Real-ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i upload --outscale 3.5 --face_enhance")
+    os.system("python Real_ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i Real_ESRGAN/upload --outscale 3.5 --face_enhance")
 
     uploaded = Image.open(os.path.join(upload_folder, img_name))
 
@@ -111,6 +108,6 @@ def merge_images(body_img_data, clothes_img_data, image_id):
     uploaded.save(img_byte_array, format="PNG")
     img_data = img_byte_array.getvalue()
 
-    clean_files()
+    clean_files(image_id)
 
     return img_data

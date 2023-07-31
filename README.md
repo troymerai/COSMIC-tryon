@@ -6,6 +6,9 @@
 - Back-end
 
     ```bash
+    # 0. 가상환경 설치 전, liblzma-dev 설치
+    $ sudo apt-get install liblzma-dev
+
     # 1. venv 설치
     $ python3.8.10 -m venv myenv
 
