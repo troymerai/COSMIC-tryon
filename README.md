@@ -10,7 +10,7 @@
 
 
 ## Project Architecture
-![아키텍쳐](https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73)
+<img align="center" width="500" src="https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73">
 
 
 ### Model Flowchart
