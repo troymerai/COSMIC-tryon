@@ -3,7 +3,7 @@
 
 ### Model API ###
 ACGPN/
-Real-ESRGAN/
+Real_ESRGAN/
 
 ### gunicorn ###
 tryonapp.service
