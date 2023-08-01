@@ -35,7 +35,7 @@ def clean_files(image_id):
         f"ACGPN/results/test/refined_cloth/img_{image_id}.png",
         f"ACGPN/results/test/warped_cloth/img_{image_id}.png",
         f"Real_ESRGAN/upload/img_{image_id}.png",
-        f"Real_ESRGAN/results/",
+        f"Real_ESRGAN/results/img_{image_id}_out.png",
     ]
 
     for file_path in directories_to_clean:
@@ -99,10 +99,12 @@ def merge_images(body_img_data, clothes_img_data, image_id):
 
     os.system("python Real_ESRGAN/inference_realesrgan.py -n RealESRGAN_x4plus -i Real_ESRGAN/upload --outscale 3.5 --face_enhance")
 
-    uploaded = Image.open(os.path.join(upload_folder, img_name))
+    results_folder = 'Real_ESRGAN/results'
+    result_img_name = f'img_{image_id}_out.png'
+    result = Image.open(os.path.join(results_folder, result_img_name))
 
     img_byte_array = io.BytesIO()
-    uploaded.save(img_byte_array, format="PNG")
+    result.save(img_byte_array, format="PNG")
     img_data = img_byte_array.getvalue()
 
     clean_files(image_id)
