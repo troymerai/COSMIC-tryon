@@ -23,27 +23,24 @@ def get_image_format(image_data):
 
 def clean_files(image_id):
     directories_to_clean = [
-        "ACGPN/Data_preprocessing/test_color/",
-        "ACGPN/Data_preprocessing/test_colormask/",
-        "ACGPN/Data_preprocessing/test_edge/",
-        "ACGPN/Data_preprocessing/test_img/",
-        "ACGPN/Data_preprocessing/test_label/",
-        "ACGPN/Data_preprocessing/test_mask/",
-        "ACGPN/Data_preprocessing/test_pose/",
-        "ACGPN/inputs/cloth/",
-        "ACGPN/inputs/img/",
-        "ACGPN/results/test/refined_cloth/",
-        "ACGPN/results/test/warped_cloth/",
-        "Real_ESRGAN/upload/",
-        "Real_ESRGAN/results/",
+        f"ACGPN/Data_preprocessing/test_color/cloth_{image_id}.png",
+        f"ACGPN/Data_preprocessing/test_colormask/",
+        f"ACGPN/Data_preprocessing/test_edge/cloth_{image_id}.png",
+        f"ACGPN/Data_preprocessing/test_img/img_{image_id}.png",
+        f"ACGPN/Data_preprocessing/test_label/img_{image_id}.png",
+        f"ACGPN/Data_preprocessing/test_mask/",
+        f"ACGPN/Data_preprocessing/test_pose/img_{image_id}_keypoints.json",
+        f"ACGPN/inputs/cloth/cloth_{image_id}.png",
+        f"ACGPN/inputs/img/img_{image_id}.png",
+        f"ACGPN/results/test/refined_cloth/img_{image_id}.png",
+        f"ACGPN/results/test/warped_cloth/img_{image_id}.png",
+        f"Real_ESRGAN/upload/img_{image_id}.png",
+        f"Real_ESRGAN/results/",
     ]
 
-    for directory in directories_to_clean:
-        image_file_name = f'{image_id}.png'
-        if image_file_name in os.listdir(directory):
-            file_path = os.path.join(directory, image_file_name)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
+    for file_path in directories_to_clean:
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
 
 def merge_images(body_img_data, clothes_img_data, image_id):

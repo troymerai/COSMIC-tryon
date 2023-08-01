@@ -89,6 +89,7 @@ def upload_images():
     merged_image = merge_images(body_img_data, clothes_img_data, image_id)
 
     new_record = AfterImage(
+        id=image_id,
         user_id=user_id,
         img_data=merged_image
     )
@@ -97,9 +98,9 @@ def upload_images():
     
     try:
         db.session.commit()
-        image_id = new_record.id
 
-    except:
+    except Exception as e:
+        print(e)
         db.session.rollback()
         return jsonify(message='합성된 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
