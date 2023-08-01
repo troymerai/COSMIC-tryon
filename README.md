@@ -1,6 +1,39 @@
 # COSMIC-tryon
 2023 공개 SW 개발자 대회 가상피팅 프로젝트
 
+
+## Team
+
+| **이태윤 (팀장)** | **민선주** | **신소희** | **정희원** |
+|:---:|:---:|:---:|:---:|
+| ![troymerai](https://github.com/troymerai.png) | ![minseonju](https://github.com/minseonju.png) | ![sinsohi](https://github.com/sinsohi.png) | ![heewoneha](https://github.com/heewoneha.png) |
+
+
+## Project Architecture
+![아키텍쳐](https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73)
+
+
+### Model Flowchart
+
+```mermaid
+  flowchart LR;
+      A[u2net]--Extract clothes mask-->B;
+      Z[self-correction-human-parsing-for-acgpn]--Remove background-->B;
+      B[ACGPN]--Improve the quality of the picture-->C[Real_ESRGAN];
+```
+
+
+## Tech Stack
+
+| Field | Stack |
+|:---:|:---|
+| Language | <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> |
+| App | <img src="https://img.shields.io/badge/Flutter-FAFAFA?style=for-the-badge&logo=flutter&logoColor=013ADF"/> |
+| Back-end | <img src="https://img.shields.io/badge/Flask-black?style=for-the-badge&logo=flask&logoColor=white"/> <img src="https://img.shields.io/badge/Gunicorn-E6E6E6?style=for-the-badge&logo=gunicorn&logoColor=298A08"/> <img src="https://img.shields.io/badge/Nginx-21610B?style=for-the-badge&logo=Nginx&logoColor=white"/> |
+| Data Base |  <img src="https://img.shields.io/badge/Azure SQL DB (MSSQL)-017CEE?style=for-the-badge&logo=microsoft&logoColor=white"/>  |
+| ML & DL |  <img src="https://img.shields.io/badge/Google Colab-gray?style=for-the-badge&logo=googlecolab&logoColor=FF8000"/>  |
+
+
 ## Usage
 
 - Back-end
