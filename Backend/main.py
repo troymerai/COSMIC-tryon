@@ -163,6 +163,9 @@ def get_image(image_id):
 
     if not data:
         return '이미지를 찾을 수 없습니다.', 404
+    else:
+        if data.user_id != payload['user_id']:
+            return jsonify(message='본인이 올린 이미지만 확인할 수 있습니다.'), 403
 
     img_data = data.img_data
     img_format = get_image_format(img_data)
