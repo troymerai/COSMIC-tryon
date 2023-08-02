@@ -6,8 +6,12 @@ After=network.target
 User=your_username
 Group=www-data
 WorkingDirectory=/path/to/your/app
-Environment="PATH=/path/to/your/virtualenv/bin"
+Environment="CC=/path/to/your/compiler"
+Environment="PATH=/path/to/your/virtualenv/bin" # And add your original PATH variable. You can check by `$ env`
+Environment="PYTHONPATH=/path/to/your/dir/COSMIC-tryon/Backend"
 ExecStart=/path/to/your/virtualenv/bin/gunicorn main:app --bind 0.0.0.0:8000 --max-requests 1000 --max-requests-jitter 50
+StandardOutput=file:/path/to/your/app/gunicorn.log
+StandardError=file:/path/to/your/app/gunicorn_error.log
 
 [Install]
 WantedBy=multi-user.target
