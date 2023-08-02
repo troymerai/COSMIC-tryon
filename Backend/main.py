@@ -1,10 +1,39 @@
 from flask import request, jsonify, Response
+import jwt
+import os
 
 from common import app, db
 from image_utils import get_image_format, merge_images
 from model.user import User
 from model.before_image import BeforeImage
 from model.after_image import AfterImage
+
+load_dotenv()
+
+
+def generate_token(user_id):
+    """
+    API 보안을 위한 개인 token 생성하는 함수
+    """
+    payload = { 'user_id': user_id }
+
+    secret_key = os.getenv('SECRET_KEY')
+    token = jwt.encode(payload, secret_key, algorithm='HS256')
+    
+    return token
+
+
+def verify_token(token):
+    """
+    개인 token이 유효 상태인지 검사하는 함수
+    """
+    secret_key = os.getenv('SECRET_KEY')
+
+    try:
+        payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+        return payload
+    except jwt.InvalidTokenError:
+        return None
 
 
 @app.route('/signup', methods=['POST'])
@@ -30,7 +59,9 @@ def sign_up():
         db.session.rollback()
         return jsonify(message='에러가 발생했습니다. 다시 시도해주세요.'), 500
 
-    return jsonify(message='회원가입이 완료되었습니다.'), 201
+    token = generate_token(user_id)
+
+    return jsonify({"message": "회원가입이 완료되었습니다.", "token": token}), 201
 
 
 @app.route('/signin', methods=['POST'])
@@ -39,6 +70,11 @@ def sign_in():
     로그인 API
     JSON 형식으로 user_id (str), user_pw(str) 넘기기
     """
+    token = request.headers.get('Authorization')
+    payload = verify_token(token)
+    if not payload:
+        return jsonify(message='올바르지 않은 접근입니다. 관리자에게 문의하세요.'), 401
+
     data = request.get_json()
     user_id = data.get('user_id')
     user_pw = data.get('user_pw') # string 타입으로 DB 테이블에 저장되어 있음.
@@ -59,6 +95,11 @@ def upload_images():
     Before 2장의 이미지 DB에 업로드 -> 모델 돌리기 -> 최종 결과 이미지 DB에 업로드
     -> After 이미지 테이블 id 반환
     """
+    token = request.headers.get('Authorization')
+    payload = verify_token(token)
+    if not payload:
+        return jsonify(message='올바르지 않은 접근입니다. 관리자에게 문의하세요.'), 401
+    
     user_id = request.form.get('user_id')
 
     body_img_file = request.files.get('body_image')
@@ -112,6 +153,11 @@ def get_image(image_id):
     """
     After 이미지 테이블 id 기반으로, 최종 결과 이미지 DB에서 GET
     """
+    token = request.headers.get('Authorization')
+    payload = verify_token(token)
+    if not payload:
+        return jsonify(message='올바르지 않은 접근입니다. 관리자에게 문의하세요.'), 401
+
     data = AfterImage.query.filter_by(id=image_id).first()
 
     if not data:
