@@ -103,48 +103,58 @@ def upload_images():
     
     user_id = request.form.get('user_id')
 
-    body_img_file = request.files.get('body_image')
-    clothes_img_file = request.files.get('clothes_image')
+    user = User.query.filter_by(user_id=user_id).first()
 
-    if not body_img_file or not clothes_img_file:
-        return '상체 이미지 1장과 옷 이미지 1장을 모두 업로드 해주세요.', 400
+    if user.is_making:
+        return '실행 중입니다. 잠시만 기다려주세요.', 400
 
-    body_img_data = body_img_file.read()
-    clothes_img_data = clothes_img_file.read()
+    else:
+        user.is_making = True
 
-    new_record = BeforeImage(
-        user_id=user_id,
-        body_img_data=body_img_data,
-        clothes_img_data=clothes_img_data
-    )
+        body_img_file = request.files.get('body_image')
+        clothes_img_file = request.files.get('clothes_image')
 
-    db.session.add(new_record)
-    
-    try:
-        db.session.commit()
-        image_id = new_record.id
+        if not body_img_file or not clothes_img_file:
+            return '상체 이미지 1장과 옷 이미지 1장을 모두 업로드 해주세요.', 400
 
-    except:
-        db.session.rollback()
-        return jsonify(message='업로드하신 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
-    
-    merged_image = merge_images(body_img_data, clothes_img_data, image_id)
+        body_img_data = body_img_file.read()
+        clothes_img_data = clothes_img_file.read()
 
-    new_record = AfterImage(
-        id=image_id,
-        user_id=user_id,
-        img_data=merged_image
-    )
+        new_record = BeforeImage(
+            user_id=user_id,
+            body_img_data=body_img_data,
+            clothes_img_data=clothes_img_data
+        )
 
-    db.session.add(new_record)
-    
-    try:
-        db.session.commit()
+        db.session.add(new_record)
+        
+        try:
+            db.session.commit()
+            image_id = new_record.id
 
-    except Exception as e:
-        print(e)
-        db.session.rollback()
-        return jsonify(message='합성된 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
+        except:
+            db.session.rollback()
+            return jsonify(message='업로드하신 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
+        
+        merged_image = merge_images(body_img_data, clothes_img_data, image_id)
+
+        new_record = AfterImage(
+            id=image_id,
+            user_id=user_id,
+            img_data=merged_image
+        )
+
+        db.session.add(new_record)
+        
+        user.is_making = False
+
+        try:
+            db.session.commit()
+
+        except Exception as e:
+            print(e)
+            db.session.rollback()
+            return jsonify(message='합성된 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
     return jsonify({"image_id": image_id, "message": "이미지 처리가 완료되었습니다."}), 200
 
@@ -174,4 +184,4 @@ def get_image(image_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
