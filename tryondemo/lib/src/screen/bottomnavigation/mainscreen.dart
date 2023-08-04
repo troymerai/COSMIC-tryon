@@ -14,9 +14,14 @@ class MainScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            color: Colors.blue,
+            color: Colors.lightBlue,
             child: Center(
-              child: Text('메인 페이지'),
+              child: Column(
+                children: [
+                  Text('메인 페이지'),
+                  Text('UI 적용 안 해서 조잡한 거 맞습니다~ (오류 아님)'),
+                ],
+              ),
             ),
           ),
           SizedBox(

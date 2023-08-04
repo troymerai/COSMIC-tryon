@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     // 1. 사용자 정보 중 저장해두고 싶지 않은 정보 삭제
     await UserPreferences.clear(
-        keepUid: true, keepId: true, keepPassword: true);
+        keepUid: true, keepId: true, keepPassword: true, keepToken: true);
 
     // 2. 메모리 상의 사용자 정보 삭제
     // 이 부분은 로그인 상태를 관리하는 변수나 클래스에 따라 변경해야 합니다.
@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Fluttertoast.showToast(msg: "로그아웃 되었습니다.");
 
     // 4. 로그아웃 완료 후 로그인 페이지로 이동
-    Get.to(LoginScreen());
+    Get.to(() => LoginScreen());
   }
 
   @override

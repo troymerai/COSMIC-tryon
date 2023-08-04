@@ -7,36 +7,66 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tryondemo/api/api.dart';
+import 'package:tryondemo/src/app.dart';
 
-import '../bottomnavigation/mainscreen.dart';
+import '../../../repository/user_preference.dart';
 
 class ImageFromServer extends StatefulWidget {
+  final int imageId;
+  const ImageFromServer({Key? key, required this.imageId}) : super(key: key);
+
   @override
   _ImageFromServerState createState() => _ImageFromServerState();
 }
 
 class _ImageFromServerState extends State<ImageFromServer> {
-  // 나중에 바꿔놓기 var uri = Uri.parse(API.predict);
-  var uri = Uri.parse('');
+  late Uri uri;
+
+  @override
+  void initState() {
+    super.initState();
+    uri = Uri.parse('${API.getimage}${widget.imageId}');
+  }
+
   Uint8List? _imageBytes;
 
+  // Future<Uint8List> _getImageBytes() async {
+  //   try {
+  //     final response = await http.get(uri);
+
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+  //       // Extract and decode the image data from jsonResponse
+  //       String base64ImageData = jsonResponse['image_data'];
+  //       Uint8List imageBytes = base64Decode(base64ImageData);
+
+  //       return imageBytes;
+  //     } else {
+  //       throw Exception('Failed to load data');
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching image: $e');
+  //     rethrow;
+  //   }
+  // }
   Future<Uint8List> _getImageBytes() async {
+    String token = UserPreferences.getUserToken();
+
     try {
-      final response = await http.get(uri);
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'image/jpeg',
+        'Authorization': '$token',
+      });
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-
-        // Extract and decode the image data from jsonResponse
-        String base64ImageData = jsonResponse['image_data'];
-        Uint8List imageBytes = base64Decode(base64ImageData);
-
-        return imageBytes;
+        return response.bodyBytes;
       } else {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      print('Error fetching image: $e');
+      Fluttertoast.showToast(msg: '에러: $e');
       rethrow;
     }
   }
@@ -66,10 +96,10 @@ class _ImageFromServerState extends State<ImageFromServer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffE3DCFF),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('JSON Server Image'),
-        backgroundColor: Color(0xff6744F2),
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: FutureBuilder<Uint8List>(
@@ -88,13 +118,17 @@ class _ImageFromServerState extends State<ImageFromServer> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.to(MainScreen());
+                          Get.to(() => App());
                         },
                         child: Container(
-                          color: Colors.white,
+                          color: Colors.black,
                           width: 100,
                           height: 50,
-                          child: Center(child: Text('홈으로 돌아가기')),
+                          child: Center(
+                              child: Text(
+                            '홈으로 돌아가기',
+                            style: TextStyle(color: Colors.white),
+                          )),
                         ),
                       ),
                     ],
@@ -104,6 +138,7 @@ class _ImageFromServerState extends State<ImageFromServer> {
             } else if (snapshot.hasError) {
               return Text("Error: ${snapshot.error}");
             }
+            // 여기에 다른 페이지 클래스를 넣어서 로딩 화면을 지루?하지 않게 만들 수 있음
             return CircularProgressIndicator();
           },
         ),

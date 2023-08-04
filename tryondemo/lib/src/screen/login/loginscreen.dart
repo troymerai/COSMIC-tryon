@@ -64,37 +64,40 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // DB 접근 문제 발생하는 경우
       if (response.statusCode == 500) {
-        Fluttertoast.showToast(msg: responsebody);
-        Fluttertoast.showToast(msg: "signup status 500");
+        Fluttertoast.showToast(msg: "에러가 발생했습니다. 다시 시도해주세요");
+        //Fluttertoast.showToast(msg: "signup status 500");
       }
       // 이미 존재하는 아이디로 회원가입을 시도하는 경우
       if (response.statusCode == 400) {
-        Fluttertoast.showToast(msg: responsebody);
-        Fluttertoast.showToast(msg: "signup status 400");
+        Fluttertoast.showToast(msg: "이미 존재하는 아이디입니다");
+        //Fluttertoast.showToast(msg: "signup status 400");
       }
       // 성공하는 경우
       if (response.statusCode == 201) {
+        // 토큰 저장 추가
+        String token = jsonData['token'];
+        await UserPreferences.saveToken(token);
         await saveInfo();
         // 로그인 화면으로 전환
         isSignupScreen = false;
         setState(() {});
-        Fluttertoast.showToast(msg: response.body);
-        Fluttertoast.showToast(msg: "signup status 201");
+        Fluttertoast.showToast(msg: "회원가입이 완료되었습니다");
+        //Fluttertoast.showToast(msg: "signup status 201");
       }
       // 알 수 없는 에러 발생 시
       // 누나한테 어케처리할지 질문
       else {
-        Fluttertoast.showToast(msg: responsebody);
-        Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
+        //Fluttertoast.showToast(msg: responsebody);
+        //Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
       }
     } catch (e) {
       print(e.toString());
-      Fluttertoast.showToast(msg: e.toString());
+      //Fluttertoast.showToast(msg: e.toString());
       // 이게 문제 맞았음.. ㅅㅂ
-      Fluttertoast.showToast(msg: '이게 문제임');
-      Fluttertoast.showToast(msg: 'statuscode: ${statusCode}');
+      //Fluttertoast.showToast(msg: '이게 문제임');
+      //Fluttertoast.showToast(msg: 'statuscode: ${statusCode}');
       // 한글 깨짐
-      Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
+      //Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
       // 한글 깨짐 해결
       Fluttertoast.showToast(msg: "json 디코딩한 데이터: ${jsonData}");
     }
@@ -132,8 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
         body: json.encode(userModel.toJson()),
       );
       var statusCode = response.statusCode;
-      Fluttertoast.showToast(msg: "usermodel info: ${userModel.toJson()}");
-      Fluttertoast.showToast(msg: "saveinfo statuscode : ${statusCode}");
+      //Fluttertoast.showToast(msg: "usermodel info: ${userModel.toJson()}");
+      //Fluttertoast.showToast(msg: "saveinfo statuscode : ${statusCode}");
 
       var resSignup = jsonDecode(response.body);
       // shared preference 기능으로 캐시에 유저 데이터 저장
@@ -142,14 +145,16 @@ class _LoginScreenState extends State<LoginScreen> {
         id: userModel.user_id,
         password: userModel.user_pw,
       );
-      Fluttertoast.showToast(msg: "saveinfo 통과함");
+      //Fluttertoast.showToast(
+      //msg: 'isLoggedin 값: ${UserPreferences.isLoggedIn()}');
+      //Fluttertoast.showToast(msg: "saveinfo 통과함");
 
       // 회원가입 성공 동시에 로그인 시켜버려??
       setState(() {});
       // if (response.statusCode == 201) {}
     } catch (e) {
       print(e.toString());
-      Fluttertoast.showToast(msg: e.toString());
+      //Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -165,18 +170,23 @@ class _LoginScreenState extends State<LoginScreen> {
   // 3. 비번 일치하지 않으면 토스트 메세지 출력 후 프로세스 종료
   // 4. 성공하면 토스트 메세지 출력 후 로그인 완료
   checkForSignin() async {
+    String token = UserPreferences.getUserToken();
+
     try {
       var res = await http.post(
         Uri.parse(API.login),
         headers: {
           // 오류때매 추가한 코드
           'Content-Type': 'application/json',
+          'Authorization': '$token',
         },
         body: json.encode({
           'user_id': userIdController.text.trim(),
           'user_pw': userPasswordController.text.trim(),
         }),
       );
+      //Fluttertoast.showToast(msg: 'token값: $token');
+
       // statuscode 저장하는 변수
       var statuscode = res.statusCode;
       // 반환 json값 담는 변수
@@ -186,21 +196,27 @@ class _LoginScreenState extends State<LoginScreen> {
       final Map<String, dynamic> jsonData = jsonDecode(decodedResponse);
       //존재하지 않는 아이디로 로그인하려는 경우
       if (statuscode == 404) {
-        Fluttertoast.showToast(msg: resbody.toString());
-        Fluttertoast.showToast(msg: "signin status 404");
+        Fluttertoast.showToast(msg: "아이디가 존재하지 않습니다");
+        //Fluttertoast.showToast(msg: "signin status 404");
       }
       //비밀번호가 일치하지 않는데 로그인 하려는 경우
       if (statuscode == 401) {
-        Fluttertoast.showToast(msg: resbody.toString());
-        Fluttertoast.showToast(msg: "signin status 401");
+        Fluttertoast.showToast(msg: "비밀번호가 일치하지 않습니다");
+        //Fluttertoast.showToast(msg: "signin status 401");
       }
       // 성공!
       if (statuscode == 200) {
-        Fluttertoast.showToast(msg: resbody.toString());
-        Fluttertoast.showToast(msg: "signin status 200");
+        Fluttertoast.showToast(msg: "로그인 되었습니다");
+        //Fluttertoast.showToast(msg: "signin status 200");
+
+        //UserPreferences.isLoggedIn() 값이 true가 아니라면 true로 변경
+        await UserPreferences.updateIsLoggedIn(true);
+
+        //Fluttertoast.showToast(
+        //  msg: '로그인 시 isLoggedin 값: ${UserPreferences.isLoggedIn()}');
 
         setState(() {});
-        Get.to(App());
+        Get.to(() => App());
       }
       // 알 수 없는 에러 발생 시
       else {
@@ -239,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 width: screenWidth,
                 height: screenHeight * 0.2,
-                color: Colors.black,
+                color: Colors.white,
               ),
               //소개글 작성 공간
               Container(
