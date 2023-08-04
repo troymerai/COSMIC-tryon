@@ -138,4 +138,4 @@ app.*.symbols
 !.vscode/settings.json
 
 # Custom ignored files and folders
-tryondemo/lib/api/api.dart
+lib/api/api.dart
