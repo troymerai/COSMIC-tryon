@@ -58,7 +58,7 @@ def merge_images(body_img_data, clothes_img_data, image_id):
     cloth = cloth.resize((192, 256), Image.BICUBIC).convert('RGB')
 
     cloth.save(os.path.join('ACGPN/Data_preprocessing/test_color', cloth_name))
-    u2net_run.infer(u2net, 'ACGPN/Data_preprocessing/test_color', 'ACGPN/Data_preprocessing/test_edge')
+    u2net_run.infer(u2net, f'ACGPN/Data_preprocessing/test_color/{cloth_name}', 'ACGPN/Data_preprocessing/test_edge')
 
 
     img_name = f'img_{image_id}.png'

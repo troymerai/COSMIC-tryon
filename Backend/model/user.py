@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from sqlalchemy import Boolean
 import os
 
 from common import db, get_current_seoul_time
@@ -17,3 +18,4 @@ class User(db.Model):
         default=get_current_seoul_time,
         nullable=False
     )
+    is_making = db.Column(Boolean, default=False, nullable=False)

@@ -13,21 +13,29 @@
 <img align="center" width="500" src="https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73">
 
 
-### Model Flowchart
+## Model Flowchart
 
 ```mermaid
-  flowchart LR;
+  flowchart TD;
+      X[Start]---->A[u2net];
+      X[Start]---->Z[self-correction-human-parsing-for-acgpn];
       A[u2net]--Extract clothes mask-->B;
-      Z[self-correction-human-parsing-for-acgpn]--Remove background-->B;
-      B[ACGPN]--Improve the quality of the picture-->C[Real_ESRGAN];
+      Z[Self-correction-human-parsing-for-acgpn]--Remove background-->B;
+      B[ACGPN]--Combine images-->C[Real_ESRGAN];
+      C[Real_ESRGAN]--Improve the quality of the picture-->Y[End];
 ```
+
+- [U2NET](https://github.com/xuebinqin/U-2-Net)
+- [Self Correction Human Parsing for ACGPN](https://github.com/GoGoDuck912/Self-Correction-Human-Parsing)
+- [ACGPN](https://github.com/minar09/ACGPN)
+- [Real ESRGAN](https://github.com/xinntao/Real-ESRGAN)
 
 
 ## Tech Stack
 
 | Field | Stack |
 |:---:|:---|
-| Language | <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> |
+| Language | <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> <img src="https://img.shields.io/badge/Dart-58ACFA?style=for-the-badge&logo=dart&logoColor=013ADF"/> |
 | App | <img src="https://img.shields.io/badge/Flutter-FAFAFA?style=for-the-badge&logo=flutter&logoColor=013ADF"/> |
 | Back-end | <img src="https://img.shields.io/badge/Flask-black?style=for-the-badge&logo=flask&logoColor=white"/> <img src="https://img.shields.io/badge/Gunicorn-E6E6E6?style=for-the-badge&logo=gunicorn&logoColor=298A08"/> <img src="https://img.shields.io/badge/Nginx-21610B?style=for-the-badge&logo=Nginx&logoColor=white"/> |
 | Data Base |  <img src="https://img.shields.io/badge/Azure SQL DB (MSSQL)-017CEE?style=for-the-badge&logo=microsoft&logoColor=white"/>  |
