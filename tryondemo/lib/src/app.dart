@@ -61,11 +61,11 @@ class App extends GetView<BottomNavController> {
                       label: ""),
                   BottomNavigationBarItem(
                       icon: Icon(
-                        CupertinoIcons.person_2_square_stack,
+                        CupertinoIcons.person,
                         //color: Colors.black,
                       ),
                       activeIcon: Icon(
-                        CupertinoIcons.person_2_square_stack,
+                        CupertinoIcons.person,
                         color: Colors.black,
                       ),
                       label: ""),

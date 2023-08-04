@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-enum PageName { HOME, CALENDER, CLUBPAGE, MYPAGE }
+enum PageName { HOME, CALENDER, MYPAGE, PAGE2 }
 
 class BottomNavController extends GetxController {
   RxInt pageIndex = 0.obs;
@@ -15,10 +15,10 @@ class BottomNavController extends GetxController {
       case PageName.CALENDER:
         _changePage(value, hasGesture: hasGesture);
         break;
-      case PageName.CLUBPAGE:
+      case PageName.MYPAGE:
         _changePage(value, hasGesture: hasGesture);
         break;
-      case PageName.MYPAGE:
+      case PageName.PAGE2:
         _changePage(value, hasGesture: hasGesture);
         break;
     }
