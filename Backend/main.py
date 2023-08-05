@@ -151,8 +151,7 @@ def upload_images():
         try:
             db.session.commit()
 
-        except Exception as e:
-            print(e)
+        except Exception:
             db.session.rollback()
             return jsonify(message='합성된 이미지 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 

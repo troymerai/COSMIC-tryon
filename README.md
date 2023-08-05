@@ -10,7 +10,7 @@
 
 
 ## Project Architecture
-<img align="center" width="500" src="https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73">
+<img align="center" width="800" src="https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73">
 
 
 ## Model Flowchart
@@ -44,7 +44,51 @@
 
 ## Usage
 
+```bash
+$ git clone https://github.com/troymerai/COSMIC-tryon.git
+```
+
 - Back-end
+
+  - Do git clone to use models
+
+    `/COSMIC-tryon/Backend$ tree -d -L 2`
+
+    ```bash
+    .
+    ├── ACGPN # In the 'Backend' directory, do git clone ACGPN.
+    │   ├── Data_preprocessing
+    │   ├── Self-Correction-Human-Parsing-for-ACGPN # In the 'ACGPN' directory, do git clone Self-Correction-Human-Parsing-for-ACGPN.
+    │   ├── U_2_Net # In the 'ACGPN' directory, do git clone U-2-Net, and change the name of this folder like this.
+    │   ├── __pycache__
+    │   ├── checkpoints
+    │   ├── data
+    │   ├── inputs
+    │   ├── models
+    │   ├── options
+    │   ├── pose
+    │   └── util
+    ├── Real_ESRGAN # In the 'Backend' directory, do git clone Real-ESRGAN, and change the name of this folder like this.
+    │   ├── assets
+    │   ├── docs
+    │   ├── experiments
+    │   ├── inputs
+    │   ├── options
+    │   ├── realesrgan
+    │   ├── realesrgan.egg-info
+    │   ├── results
+    │   ├── scripts
+    │   ├── tests
+    │   ├── upload
+    │   └── weights
+    ├── __pycache__
+    └── model
+        └── __pycache__
+    ```
+    
+    일부 `from ~ import ~` 경로 설정에 폴더명을 추가로 입력한다거나, numpy 버전으로 인한 `float` → `float64`와 같은 코드 변경이 필요할 수 있습니다. [issue #20](https://github.com/troymerai/COSMIC-tryon/issues/20) 또한 참고해주세요.
+
+  - Install other things
 
     ```bash
     # 0. 가상환경 설치 전, liblzma-dev 설치
