@@ -19,3 +19,4 @@ class User(db.Model):
         nullable=False
     )
     is_making = db.Column(Boolean, default=False, nullable=False)
+    token = db.Column(db.String(255), nullable=False)
