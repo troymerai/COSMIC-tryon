@@ -13,9 +13,17 @@ from model.after_image import AfterImage
 load_dotenv()
 
 
-def is_valid_input(input_string):
+def is_id_valid_input(input_string):
     """
-    특수문자(!, @, *, _)와 알파벳 대/소문자, 숫자만. 정규표현식으로 유효성 검사하는 함수
+    아이디는 특수문자(_)와 알파벳 대/소문자, 숫자만. 정규표현식으로 유효성 검사하는 함수
+    """
+    pattern = r'^[a-z0-9_]+$'
+    return re.match(pattern, input_string)
+
+
+def is_pw_valid_input(input_string):
+    """
+    비밀번호는 특수문자(!, @, *, _)와 알파벳 대/소문자, 숫자만. 정규표현식으로 유효성 검사하는 함수
     """
     pattern = r'^[a-zA-Z0-9!@*_]+$'
     return re.match(pattern, input_string)
@@ -60,11 +68,11 @@ def sign_up():
     if existing_user:
         return jsonify(message='이미 존재하는 아이디입니다.'), 400
 
-    if user_id is None or not is_valid_input(user_id):
-        return jsonify(message='아이디는 알파벳과 숫자, !, @, *, _만 허용됩니다.'), 422
+    if user_id is None or not is_id_valid_input(user_id):
+        return jsonify(message='아이디는 알파벳 소문자와 숫자, 특수문자 _만 허용됩니다.'), 422
 
-    if user_pw is None or not is_valid_input(user_pw):
-        return jsonify(message='비밀번호는 알파벳과 숫자, !, @, *, _만 허용됩니다.'), 422
+    if user_pw is None or not is_pw_valid_input(user_pw):
+        return jsonify(message='비밀번호는 알파벳 대소문자와 숫자, 특수문자 !, @, *, _만 허용됩니다.'), 422
 
     token = generate_token(user_id)
 
@@ -93,6 +101,9 @@ def sign_in():
     user = User.query.filter_by(user_id=user_id).first()
     if not user:
         return jsonify(message='아이디가 존재하지 않습니다.'), 404
+
+    if user.user_id != user_id:
+        return jsonify(message='아이디가 일치하지 않습니다.'), 401
 
     if user.user_pw != user_pw:
         return jsonify(message='비밀번호가 일치하지 않습니다.'), 401
