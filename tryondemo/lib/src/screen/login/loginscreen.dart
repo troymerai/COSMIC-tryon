@@ -75,8 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // 성공하는 경우
       if (response.statusCode == 201) {
         // 토큰 저장 추가
-        String token = jsonData['token'];
-        await UserPreferences.saveToken(token);
+        //String token = jsonData['token'];
+        //await UserPreferences.saveToken(token);
         await saveInfo();
         // 로그인 화면으로 전환
         isSignupScreen = false;
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
         headers: {
           // 오류때매 추가한 코드
           'Content-Type': 'application/json',
-          'Authorization': '$token',
+          //'Authorization': '$token',
         },
         body: json.encode({
           'user_id': userIdController.text.trim(),
@@ -208,6 +208,14 @@ class _LoginScreenState extends State<LoginScreen> {
       if (statuscode == 200) {
         Fluttertoast.showToast(msg: "로그인 되었습니다");
         //Fluttertoast.showToast(msg: "signin status 200");
+        //
+        String token = jsonData['token'];
+        await UserPreferences.saveToken(token);
+        await UserPreferences.saveUser(
+          uuid: '',
+          id: userIdController.text.trim(),
+          password: userPasswordController.text.trim(),
+        );
 
         //UserPreferences.isLoggedIn() 값이 true가 아니라면 true로 변경
         await UserPreferences.updateIsLoggedIn(true);
