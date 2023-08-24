@@ -24,11 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   /** textediter의 값을 key값으로 제어 */
   final _formKey = GlobalKey<FormState>();
 
-  // user정보 담아두는 변수
   String userId = '';
   String userPassword = '';
 
-  // 각각의 textediter controller
   var userIdController = TextEditingController();
   var userPasswordController = TextEditingController();
 
@@ -47,7 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
     var response = await http.post(
       Uri.parse(API.signup),
       headers: {
-        // 오류때매 추가한 코드
         'Content-Type': 'application/json',
       },
       body: json.encode({
@@ -55,9 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
         'user_pw': userPasswordController.text.trim(),
       }),
     );
-    // statuscode 저장하는 변수
+
     var statusCode = response.statusCode;
-    // 반환 json값 담는 변수
     var responsebody = jsonDecode(response.body);
     var decodedResponse = utf8.decoder.convert(response.bodyBytes);
     final Map<String, dynamic> jsonData = jsonDecode(decodedResponse);
@@ -75,9 +71,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // 성공하는 경우
       if (response.statusCode == 201) {
         // 토큰 저장 추가
-        //String token = jsonData['token'];
-        //await UserPreferences.saveToken(token);
         await saveInfo();
+
         // 로그인 화면으로 전환
         isSignupScreen = false;
         setState(() {});
@@ -85,20 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
         //Fluttertoast.showToast(msg: "signup status 201");
       }
       // 알 수 없는 에러 발생 시
-      // 누나한테 어케처리할지 질문
       else {
-        //Fluttertoast.showToast(msg: responsebody);
-        //Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
+        Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
       }
     } catch (e) {
       print(e.toString());
-      //Fluttertoast.showToast(msg: e.toString());
-      // 이게 문제 맞았음.. ㅅㅂ
-      //Fluttertoast.showToast(msg: '이게 문제임');
-      //Fluttertoast.showToast(msg: 'statuscode: ${statusCode}');
-      // 한글 깨짐
-      //Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${response.body}");
-      // 한글 깨짐 해결
       Fluttertoast.showToast(msg: "json 디코딩한 데이터: ${jsonData}");
     }
   }
@@ -112,49 +98,31 @@ class _LoginScreenState extends State<LoginScreen> {
     User userModel = User(
       user_id: userIdController.text.trim(),
       user_uuid: userUuid,
-      //user_name: "",
-      //user_gender: "",
-      //user_nickname: "",
-      //user_phonenumber: 0,
-      //user_studentID: 0,
-      //user_email: "",
       user_pw: userPasswordController.text.trim(),
-      //user_age: 0,
-      //user_imageUrls: "",
-      //user_bio: "",
-      //user_major: "",
     );
 
     try {
       var response = await http.post(
         Uri.parse(API.signup),
         headers: {
-          // 오류때매 추가한 코드
           'Content-Type': 'application/json',
         },
         body: json.encode(userModel.toJson()),
       );
       var statusCode = response.statusCode;
-      //Fluttertoast.showToast(msg: "usermodel info: ${userModel.toJson()}");
-      //Fluttertoast.showToast(msg: "saveinfo statuscode : ${statusCode}");
 
       var resSignup = jsonDecode(response.body);
-      // shared preference 기능으로 캐시에 유저 데이터 저장
+
+      // 캐시에 유저 데이터 저장
       await UserPreferences.saveUser(
         uuid: userModel.user_uuid,
         id: userModel.user_id,
         password: userModel.user_pw,
       );
-      //Fluttertoast.showToast(
-      //msg: 'isLoggedin 값: ${UserPreferences.isLoggedIn()}');
-      //Fluttertoast.showToast(msg: "saveinfo 통과함");
 
-      // 회원가입 성공 동시에 로그인 시켜버려??
       setState(() {});
-      // if (response.statusCode == 201) {}
     } catch (e) {
       print(e.toString());
-      //Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -176,39 +144,36 @@ class _LoginScreenState extends State<LoginScreen> {
       var res = await http.post(
         Uri.parse(API.login),
         headers: {
-          // 오류때매 추가한 코드
           'Content-Type': 'application/json',
-          //'Authorization': '$token',
         },
         body: json.encode({
           'user_id': userIdController.text.trim(),
           'user_pw': userPasswordController.text.trim(),
         }),
       );
-      //Fluttertoast.showToast(msg: 'token값: $token');
 
-      // statuscode 저장하는 변수
       var statuscode = res.statusCode;
-      // 반환 json값 담는 변수
       var resbody = jsonDecode(res.body);
-      // 반환 json이 깨져서 utf-8로 변환하는 변수
       var decodedResponse = utf8.decoder.convert(res.bodyBytes);
       final Map<String, dynamic> jsonData = jsonDecode(decodedResponse);
+
       //존재하지 않는 아이디로 로그인하려는 경우
       if (statuscode == 404) {
         Fluttertoast.showToast(msg: "아이디가 존재하지 않습니다");
         //Fluttertoast.showToast(msg: "signin status 404");
       }
+
       //비밀번호가 일치하지 않는데 로그인 하려는 경우
       if (statuscode == 401) {
         Fluttertoast.showToast(msg: "비밀번호가 일치하지 않습니다");
         //Fluttertoast.showToast(msg: "signin status 401");
       }
+
       // 성공!
       if (statuscode == 200) {
         Fluttertoast.showToast(msg: "로그인 되었습니다");
         //Fluttertoast.showToast(msg: "signin status 200");
-        //
+
         String token = jsonData['token'];
         await UserPreferences.saveToken(token);
         await UserPreferences.saveUser(
@@ -217,11 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
           password: userPasswordController.text.trim(),
         );
 
-        //UserPreferences.isLoggedIn() 값이 true가 아니라면 true로 변경
         await UserPreferences.updateIsLoggedIn(true);
-
-        //Fluttertoast.showToast(
-        //  msg: '로그인 시 isLoggedin 값: ${UserPreferences.isLoggedIn()}');
 
         setState(() {});
         Get.to(() => App());
@@ -233,9 +194,6 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       print(e.toString());
       Fluttertoast.showToast(msg: e.toString());
-      // Fluttertoast.showToast(msg: 'statuscode: ${statusCode}');
-      // Fluttertoast.showToast(msg: "서버에서 반환된 데이터: ${res.body}");
-      // Fluttertoast.showToast(msg: "json 디코딩한 데이터: ${jsonData}");
     }
   }
 
@@ -274,8 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
                       child: Text(
                         '안녕하세요\n피팅룸입니다',
                         style: TextStyle(
@@ -296,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //textedier 및 정보 입력 공간
               Container(
                 // container 디자인 부분
-                padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
                 width: screenWidth * 0.8,
                 height:
                     isSignupScreen ? screenHeight * 0.35 : screenHeight * 0.3,
@@ -339,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 if (!isSignupScreen)
                                   Container(
-                                    margin: EdgeInsets.only(top: 3),
+                                    margin: const EdgeInsets.only(top: 3),
                                     height: 2,
                                     width: 55,
                                     color: Colors.black,
@@ -369,7 +327,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 if (isSignupScreen)
                                   Container(
-                                    margin: EdgeInsets.only(top: 3),
+                                    margin: const EdgeInsets.only(top: 3),
                                     height: 2,
                                     width: 55,
                                     color: Colors.black,
@@ -384,14 +342,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     //// 로그인 부분
                     if (!isSignupScreen)
                       Container(
-                        margin: EdgeInsets.only(top: 10),
+                        margin: const EdgeInsets.only(top: 10),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             children: [
                               //// 로그인 - userid
                               TextFormField(
-                                key: ValueKey(1),
+                                key: const ValueKey(1),
                                 controller: userIdController,
                                 validator: (value) {
                                   value == "" ? "아이디를 적어주세요" : null;
@@ -432,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               //// 로그인 - 비밀번호
                               TextFormField(
                                 obscureText: true,
-                                key: ValueKey(2),
+                                key: const ValueKey(2),
                                 controller: userPasswordController,
                                 validator: (value) {
                                   value == "" ? "비밀번호를 적어주세요" : null;
@@ -503,14 +461,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     //// 회원가입 부분
                     if (isSignupScreen)
                       Container(
-                        margin: EdgeInsets.only(top: 10),
+                        margin: const EdgeInsets.only(top: 10),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             children: [
                               //// 회원가입 - userid
                               TextFormField(
-                                key: ValueKey(3),
+                                key: const ValueKey(3),
                                 controller: userIdController,
                                 validator: (value) {
                                   value == "" ? "아이디를 적어주세요" : null;
@@ -551,7 +509,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               //// 회원가입 - 비밀번호
                               TextFormField(
                                 obscureText: true,
-                                key: ValueKey(4),
+                                key: const ValueKey(4),
                                 controller: userPasswordController,
                                 validator: (value) {
                                   value == "" ? "비밀번호를 적어주세요" : null;

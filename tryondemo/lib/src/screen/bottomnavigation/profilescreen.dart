@@ -19,20 +19,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final String savedId = await UserPreferences.getUserId();
     final String savedPassword = await UserPreferences.getUserPassword();
 
-    // 1. 사용자 정보 중 저장해두고 싶지 않은 정보 삭제
+    /** 사용자를 정보 삭제 */
     await UserPreferences.clear(
         keepUid: true, keepId: true, keepPassword: true, keepToken: true);
 
-    // 2. 메모리 상의 사용자 정보 삭제
-    // 이 부분은 로그인 상태를 관리하는 변수나 클래스에 따라 변경해야 합니다.
     setState(() {
       // 로그인 상태를 나타내는 변수나 클래스 초기화
     });
 
-    // 3. 로그아웃 완료 후 토스트 메세지 출력
     Fluttertoast.showToast(msg: "로그아웃 되었습니다.");
 
-    // 4. 로그아웃 완료 후 로그인 페이지로 이동
+    // 로그아웃 프로세스 후 로그인 페이지로 이동
     Get.to(() => LoginScreen());
   }
 
@@ -52,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.infinity,
               height: 100,
               color: Colors.amber,
-              child: Text('프로필 페이지'),
+              child: const Text('프로필 페이지'),
             ),
             Container(
               width: double.infinity,
@@ -80,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 height: 100,
                 color: Colors.purple,
-                child: Center(child: Text('로그아웃 버튼')),
+                child: const Center(child: Text('로그아웃 버튼')),
               ),
             ),
           ],

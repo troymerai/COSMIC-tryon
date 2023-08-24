@@ -13,18 +13,18 @@ class UserPreferences {
     _preferences = await SharedPreferences.getInstance();
   }
 
-  // Update isLoggedIn value
+  /** 로그인 상태 저장 */
   static Future<bool> updateIsLoggedIn(bool isLoggedIn) async {
     return await _preferences?.setBool(kisLoggedIn, isLoggedIn) ?? false;
   }
 
-  // 회원가입 성공 후 토큰 값 저장 함수
+  /** 토큰 값 저장 */
   static Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
   }
 
-  // Save user data
+  /** 유저 데이터 저장 */
   static Future<bool> saveUser({
     required String uuid,
     required String id,
@@ -36,7 +36,7 @@ class UserPreferences {
     return await _preferences?.setString(_kUserPassword, password) ?? false;
   }
 
-  // Get user data
+  /** 유저 데이터 불러오기 */
   static String getUserUid() => _preferences?.getString(_kUserUid) ?? "uid없음";
   static String getUserId() => _preferences?.getString(_kUserId) ?? 'id없음';
   static String getUserPassword() =>
@@ -46,7 +46,7 @@ class UserPreferences {
   static String getUserToken() =>
       _preferences?.getString(kUserToken) ?? "token 없음";
 
-  // Clear stored data
+  /** 저장된 유저 데이터 삭제 */
   static Future<void> clear({
     bool keepUid = false,
     bool keepId = false,
