@@ -19,17 +19,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final String savedId = await UserPreferences.getUserId();
     final String savedPassword = await UserPreferences.getUserPassword();
 
-    /** 사용자를 정보 삭제 */
+    // 1. 사용자 정보 중 저장해두고 싶지 않은 정보 삭제
     await UserPreferences.clear(
         keepUid: true, keepId: true, keepPassword: true, keepToken: true);
 
+    // 2. 메모리 상의 사용자 정보 삭제
     setState(() {
       // 로그인 상태를 나타내는 변수나 클래스 초기화
     });
 
+    // 3. 로그아웃 완료 후 토스트 메세지 출력
     Fluttertoast.showToast(msg: "로그아웃 되었습니다.");
 
-    // 로그아웃 프로세스 후 로그인 페이지로 이동
+    // 4. 로그아웃 완료 후 로그인 페이지로 이동
     Get.to(() => LoginScreen());
   }
 
@@ -49,34 +51,99 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.infinity,
               height: 100,
               color: Colors.amber,
-              child: const Text('프로필 페이지'),
+              child: const Center(
+                child: Text(
+                  '프로필 페이지',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            // Container(
+            //   width: double.infinity,
+            //   height: 100,
+            //   color: Colors.blue,
+            //   child: Center(child: Text(userUid)),
+            // ),
+            Container(
+              width: 300,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[300]!,
+                    offset: Offset(4, 4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-4, -4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Center(child: Text('아이디: ' + userId)),
+            ),
+            SizedBox(
+              height: 10,
             ),
             Container(
-              width: double.infinity,
+              width: 300,
               height: 100,
-              color: Colors.blue,
-              child: Center(child: Text(userUid)),
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[300]!,
+                    offset: Offset(4, 4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-4, -4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Center(child: Text('비밀번호: ' + userPassword)),
             ),
-            Container(
-              width: double.infinity,
-              height: 100,
-              color: Colors.green,
-              child: Center(child: Text(userId)),
-            ),
-            Container(
-              width: double.infinity,
-              height: 100,
-              color: Colors.red,
-              child: Center(child: Text(userPassword)),
+            SizedBox(
+              height: 10,
             ),
             GestureDetector(
               onTap: () {
                 logout();
               },
               child: Container(
-                width: double.infinity,
+                width: 300,
                 height: 100,
-                color: Colors.purple,
+                decoration: BoxDecoration(
+                  color: Colors.white54,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[300]!,
+                      offset: Offset(4, 4),
+                      blurRadius: 2,
+                      spreadRadius: 1,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(-4, -4),
+                      blurRadius: 2,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
                 child: const Center(child: Text('로그아웃 버튼')),
               ),
             ),
