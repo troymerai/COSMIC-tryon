@@ -24,7 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         keepUid: true, keepId: true, keepPassword: true, keepToken: true);
 
     // 2. 메모리 상의 사용자 정보 삭제
-    // 이 부분은 로그인 상태를 관리하는 변수나 클래스에 따라 변경해야 합니다.
     setState(() {
       // 로그인 상태를 나타내는 변수나 클래스 초기화
     });
@@ -52,35 +51,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.infinity,
               height: 100,
               color: Colors.amber,
-              child: Text('프로필 페이지'),
+              child: const Center(
+                child: Text(
+                  '프로필 페이지',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            // Container(
+            //   width: double.infinity,
+            //   height: 100,
+            //   color: Colors.blue,
+            //   child: Center(child: Text(userUid)),
+            // ),
+            Container(
+              width: 300,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[300]!,
+                    offset: Offset(4, 4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-4, -4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Center(child: Text('아이디: ' + userId)),
+            ),
+            SizedBox(
+              height: 10,
             ),
             Container(
-              width: double.infinity,
+              width: 300,
               height: 100,
-              color: Colors.blue,
-              child: Center(child: Text(userUid)),
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[300]!,
+                    offset: Offset(4, 4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-4, -4),
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: Center(child: Text('비밀번호: ' + userPassword)),
             ),
-            Container(
-              width: double.infinity,
-              height: 100,
-              color: Colors.green,
-              child: Center(child: Text(userId)),
-            ),
-            Container(
-              width: double.infinity,
-              height: 100,
-              color: Colors.red,
-              child: Center(child: Text(userPassword)),
+            SizedBox(
+              height: 10,
             ),
             GestureDetector(
               onTap: () {
                 logout();
               },
               child: Container(
-                width: double.infinity,
+                width: 300,
                 height: 100,
-                color: Colors.purple,
-                child: Center(child: Text('로그아웃 버튼')),
+                decoration: BoxDecoration(
+                  color: Colors.white54,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[300]!,
+                      offset: Offset(4, 4),
+                      blurRadius: 2,
+                      spreadRadius: 1,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(-4, -4),
+                      blurRadius: 2,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: const Center(child: Text('로그아웃 버튼')),
               ),
             ),
           ],

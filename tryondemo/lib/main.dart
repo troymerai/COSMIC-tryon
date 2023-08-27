@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
       ),
       initialBinding: InitBinding(),
       home: UserPreferences.isLoggedIn() ? App() : LoginScreen(),
-      // home: App(),
     );
   }
 }

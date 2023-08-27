@@ -7,11 +7,11 @@
 | **이태윤 (팀장)** | **민선주** | **신소희** | **정희원** |
 |:---:|:---:|:---:|:---:|
 | ![troymerai](https://github.com/troymerai.png) | ![minseonju](https://github.com/minseonju.png) | ![sinsohi](https://github.com/sinsohi.png) | ![heewoneha](https://github.com/heewoneha.png) |
+| <a href="mailto:16alexandros57@gmail.com"><img src="https://img.shields.io/badge/EMAIL-F0F0F0?style=flat-square&logo=Gmail&logoColor=orange&link=mailto:16alexandros57@gmail.com"/></a> | <a href="mailto:10sc1108@naver.com"><img src="https://img.shields.io/badge/EMAIL-F0F0F0?style=flat-square&logo=Gmail&logoColor=orange&link=mailto:10sc1108@naver.com"/></a> | <a href="mailto:sinsohi4280@gmail.com"><img src="https://img.shields.io/badge/EMAIL-F0F0F0?style=flat-square&logo=Gmail&logoColor=orange&link=mailto:sinsohi4280@gmail.com"/></a> | <a href="mailto:jhw07191@gmail.com"><img src="https://img.shields.io/badge/EMAIL-F0F0F0?style=flat-square&logo=Gmail&logoColor=orange&link=mailto:jhw07191@gmail.com"/></a> |
 
 
 ## Project Architecture
-<img align="center" width="800" src="https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73">
-
+<img align="center" width="800" src="https://user-images.githubusercontent.com/107831875/263524225-38ceb442-1e39-4934-ac2c-c9bdf6c09138.png">
 
 ## Model Flowchart
 
@@ -20,7 +20,7 @@
       X[Start]---->A[u2net];
       X[Start]---->Z[self-correction-human-parsing-for-acgpn];
       A[u2net]--Extract clothes mask-->B;
-      Z[Self-correction-human-parsing-for-acgpn]--Remove background-->B;
+      Z[Self-correction-human-parsing-for-acgpn]--Remove background & Parse posture-->B;
       B[ACGPN]--Combine images-->C[Real_ESRGAN];
       C[Real_ESRGAN]--Improve the quality of the picture-->Y[End];
 ```
