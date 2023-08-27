@@ -21,7 +21,7 @@
       X[Start]---->A[u2net];
       X[Start]---->Z[self-correction-human-parsing-for-acgpn];
       A[u2net]--Extract clothes mask-->B;
-      Z[Self-correction-human-parsing-for-acgpn]--Remove background-->B;
+      Z[Self-correction-human-parsing-for-acgpn]--Remove background & parse posture-->B;
       B[ACGPN]--Combine images-->C[Real_ESRGAN];
       C[Real_ESRGAN]--Improve the quality of the picture-->Y[End];
 ```
