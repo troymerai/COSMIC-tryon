@@ -11,8 +11,7 @@
 
 
 ## Project Architecture
-<img align="center" width="800" src="https://github.com/troymerai/COSMIC-tryon/assets/74031620/53a7432e-a050-4302-8ad6-01013310dd73">
-
+<img align="center" width="800" src="https://user-images.githubusercontent.com/107831875/263524225-38ceb442-1e39-4934-ac2c-c9bdf6c09138.png">
 
 ## Model Flowchart
 
