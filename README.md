@@ -11,7 +11,7 @@
 
 
 ## Project Architecture
-<img align="center" width="800" src="https://user-images.githubusercontent.com/107831875/263524225-38ceb442-1e39-4934-ac2c-c9bdf6c09138.png">
+<img align="center" width="800" src="https://user-images.githubusercontent.com/136775478/264917294-7bb6200a-8676-4900-a8cf-75a113266917.jpg">
 
 ## Model Flowchart
 

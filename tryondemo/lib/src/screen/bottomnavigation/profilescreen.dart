@@ -23,15 +23,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await UserPreferences.clear(
         keepUid: true, keepId: true, keepPassword: true, keepToken: true);
 
-    // 2. 메모리 상의 사용자 정보 삭제
+    // 2. stack 초기화
+    BottomNavController().bottomHistory.clear();
+    BottomNavController().bottomHistory.add(0);
+
+    // 3. 상태 변경
     setState(() {
-      // 로그인 상태를 나타내는 변수나 클래스 초기화
+      // 로그인 상태를 나타내는 변수, stack 초기화
     });
 
-    // 3. 로그아웃 완료 후 토스트 메세지 출력
+    // 4. 로그아웃 완료 후 토스트 메세지 출력
     Fluttertoast.showToast(msg: "로그아웃 되었습니다.");
 
-    // 4. 로그아웃 완료 후 로그인 페이지로 이동
+    // 5. 로그아웃 완료 후 로그인 페이지로 이동
     Get.to(() => LoginScreen());
   }
 
