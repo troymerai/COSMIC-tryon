@@ -10,22 +10,22 @@ class BottomNavController extends GetxController {
     var page = PageName.values[value];
     switch (page) {
       case PageName.HOME:
-        _changePage(value, hasGesture: hasGesture);
+        changePage(value, hasGesture: hasGesture);
         break;
       case PageName.CALENDER:
-        _changePage(value, hasGesture: hasGesture);
+        changePage(value, hasGesture: hasGesture);
         break;
       case PageName.MYPAGE:
-        _changePage(value, hasGesture: hasGesture);
+        changePage(value, hasGesture: hasGesture);
         break;
       case PageName.PAGE2:
-        _changePage(value, hasGesture: hasGesture);
+        changePage(value, hasGesture: hasGesture);
         break;
     }
   }
 
 /** bottomnavigation의 history를 저장했다가 라우팅 관리에 사용할 수 있음 */
-  void _changePage(int value, {bool hasGesture: true}) {
+  void changePage(int value, {bool hasGesture: true}) {
     pageIndex(value);
     if (!hasGesture) return;
     if (bottomHistory.last != value) {
